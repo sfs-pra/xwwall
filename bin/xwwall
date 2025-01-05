@@ -161,7 +161,7 @@ else
 		. "$f"
 		[[ "$POS" == '0' ]] && echo "$OUTPUT = primary" && cp $f $TEMP/xx0
 		[[ "$POS" == "$X" ]] && echo "$OUTPUT = secondary" && cp $f $TEMP/xx1
-		[[ $POS -gt $X ]] && echo "$OUTPUT = extra" && cp $i $TEMP/xx2$e && e=$((e+1))
+		[[ $POS -gt $X ]] && echo "$OUTPUT = extra" && cp $f $TEMP/xx2$e && e=$((e+1))
 	done
 	rm $TEMP/Xmonitor* # finished with these
 	export NUM
