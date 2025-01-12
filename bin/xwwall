@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export V=0.1.1
+export V=0.1.2
 export GTK3DIALOG
 [[ -z "$GTK3DIALOG" ]] && GTK3DIALOG=gtk3dialog
 export BGDIR="${BGDIR:-$HOME/Pictures/wallpapers}"
