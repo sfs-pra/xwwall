@@ -91,7 +91,7 @@ Here the main configuration is stored from *Preferences* and if using
 *wayland* the ``cmd`` file which is sourced at startup with the
 ``--restore`` option in your startup configuration. On *X11* the ``feh``
 program generates a ``$HOME/.fehbg`` executable file which is executed
-at startup  with the``--restore`` option if configured in your startup
+at startup  with the ``--restore`` option if configured in your startup
 configuration.
 
 Startup
