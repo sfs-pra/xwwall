@@ -128,7 +128,7 @@ executable permissions on the copied file.
 Similar procedures can be followed for respective *wayland* compositors
 and *X11* window managers.
 
-Once you have created you profile it then needs to be included in your
+Once you have created your profile it then needs to be included in your
 startup routine. You can simply append the name of the profile directory
 to the ``--restore`` option in your startup routine like so:
 
