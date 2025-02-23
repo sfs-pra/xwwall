@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export V=0.2.0
+export V=0.2.1
 export GTK3DIALOG
 export MAINGUI
 [[ -z "$GTK3DIALOG" ]] && GTK3DIALOG=gtk3dialog
@@ -52,10 +52,10 @@ case "$1" in
 	-*h|-*help)
 	echo -e "\t$PROG -h|--help\n\t\tshow this help and exit.\n"
 	echo -e "\t$PROG -v|--version\n\t\tprint version and exit.\n"
-	echo -e "\t$PROG -d|--delconf\n\t\tdelete $CONF"
-	echo -e "\t\tif $PROG doesn't startand exit.\n"
+	echo -e "\t$PROG -d|--delconf\n\t\tdelete \$HOME/.config/$PROG"
+	echo -e "\t\tif $PROG doesn't start and exit.\n"
 	echo -e "\t$PROG --restore\n\t\trestore backgrounds at session start."
-	echo -e "\tAn optional argumant \"\$PROFILE\" is supported.\n"
+	echo -e "\tAn optional argument \"\$PROFILE\" is supported.\n"
 	echo -e "\ttry \"man $PROG\" for more information."
 	exit 0
 	;;
