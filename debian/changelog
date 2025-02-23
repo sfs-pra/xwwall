@@ -1,3 +1,9 @@
+xwwall (0.2.1-1) boron; urgency=low
+
+  * New upstream version.
+
+ -- Mick Amadio <01micko@gmx.com>  Sun, 23 Feb 2025 13:00:21 +1000
+
 xwwall (0.2.0-1) boron; urgency=low
 
   * New upstream version.
