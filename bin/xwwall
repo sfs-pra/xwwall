@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export V=0.2.1
+export V=0.2.2
 export GTK3DIALOG
 export MAINGUI
 [[ -z "$GTK3DIALOG" ]] && GTK3DIALOG=gtk3dialog
@@ -537,7 +537,7 @@ sub_gui() {
    </window>'
 	eval $($GTK3DIALOG -p SUBGUI -c --styles=$TEMP/win.css)
 	case $EXIT in
-		Yes)read -r a b c <<<$(ps -u | grep -m1 'main_gui'); kill -9 $b;;
+		Yes)read -r a b c <<<$(ps -ef | grep -m1 'main_gui'); kill -9 $b;;
 	esac
 }; export -f sub_gui
 
