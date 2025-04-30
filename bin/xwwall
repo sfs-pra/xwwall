@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export V=0.2.3
+export V=0.2.4
 export GTK3DIALOG
 export MAINGUI
 [[ -z "$GTK3DIALOG" ]] && GTK3DIALOG=gtk3dialog
@@ -78,7 +78,7 @@ if [[ "$WAYLAND" == 'yes' ]]; then
 				continue
 			fi
 			;;
-			[a-zA-Z][a-zA-Z][a-zA-Z0-9])MON=$l;;
+			[a-zA-Z][a-zA-Z]*)MON=$l;;
 		esac
 		case "$q" in
 			current*)res=$l;;
