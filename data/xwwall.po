@@ -1,0 +1,180 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: xwwall 0.2.5\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2023-11-15 12:00+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+msgid ""
+"Adjust the width of the interface to suit. The thumbnail setting below may "
+"also need adjustment."
+msgstr ""
+"Настройте ширину интерфейса по своему вкусу. Возможно, потребуется также "
+"изменить настройку миниатюр ниже."
+
+msgid ""
+"Adjust the width of thumbnail images. May need to adjust above setting to "
+"suit. Larger number is smaller width."
+msgstr ""
+"Настройте ширину миниатюр изображений. Возможно, потребуется изменить "
+"настройку выше. Большее число означает меньшую ширину."
+
+msgid "An optional argument \"$PROFILE\" is supported."
+msgstr "Поддерживается необязательный аргумент \"$PROFILE\"."
+
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "Choose a background color"
+msgstr "Выберите цвет фона"
+
+msgid "Choose the Mode."
+msgstr "Выберите режим (растянуть, заполнить, подогнать, центр, плитки)."
+
+msgid "Choose the directory to search wallpapers."
+msgstr "Выберите каталог для поиска обоев."
+
+msgid "Confirmation is required when finished."
+msgstr "По завершении требуется подтверждение."
+
+msgid "Dismiss"
+msgstr "Закрыть"
+
+msgid "Do not show again"
+msgstr "Не показывать снова"
+
+msgid "GUI width adjustment"
+msgstr "Настройка ширины интерфейса"
+
+msgid "GUI: MWdth=$MWdth x MHght=$MHght"
+msgstr "Графический интерфейс: Ширина=$MWdth x Высота=$MHght"
+
+msgid "If unsatisfied with your choice try again."
+msgstr "Если не удовлетворены выбором, попробуйте снова."
+
+msgid "Mode:"
+msgstr "Режим:"
+
+msgid "Ok"
+msgstr "ОК"
+
+msgid "Optionally choose extra directories"
+msgstr "Дополнительные каталоги с обоями (необязательно)"
+
+msgid "Output:"
+msgstr "Выход:"
+
+msgid "Please confirm that the image below is correct."
+msgstr "Пожалуйста, подтвердите, что изображение ниже верно."
+
+msgid "Please set a background directory"
+msgstr "Пожалуйста, укажите каталог с обоями"
+
+msgid "Please wait ..."
+msgstr "Пожалуйста, подождите..."
+
+msgid "Preferences"
+msgstr "Настройки"
+
+msgid "Press Save and"
+msgstr "После изменения настроек"
+
+msgid "Press Save and $PROG will restart when you are ready."
+msgstr "Нажмите Сохранить, и $PROG перезапустится, когда вы будете готовы."
+
+msgid "Press the image to set."
+msgstr "Нажмите на изображение для установки."
+
+msgid "Pressing image will confirm,"
+msgstr "Нажатие на изображение для подтверждения выбора,"
+
+msgid "Refresh"
+msgstr "Обновить"
+
+msgid "Save"
+msgstr "Сохранить"
+
+msgid "Select an image for your wallpaper by pressing the image."
+msgstr "Выберите обои, нажав на изображение."
+
+msgid "Select extra directories."
+msgstr "Выберите дополнительные каталоги."
+
+msgid "Select your preferences."
+msgstr "Настройки."
+
+msgid "Selection"
+msgstr "Выбор"
+
+msgid "Thumbnail adjustment"
+msgstr "Настройка миниатюр"
+
+msgid "WARNING: Your desktop may be unsupported"
+msgstr "ПРЕДУПРЕЖДЕНИЕ: Ваш рабочий стол может не поддерживаться"
+
+msgid "Warning: Limit of 300 images"
+msgstr "Предупреждение: Лимит 300 изображений"
+
+msgid "Welcome to $PROG"
+msgstr "Добро пожаловать в $PROG"
+
+msgid ""
+"You have %d monitors connected. Carefully choose an image for each of them."
+msgstr ""
+"У вас подключено %d монитора. Внимательно выберите изображение для каждого "
+"из них."
+
+msgid "delete"
+msgstr "удалить"
+
+msgid "enable extra directories."
+msgstr "включить дополнительные каталоги."
+
+msgid "enable initial splash screen."
+msgstr "показывать стартовый экран-заставку."
+
+msgid "extra"
+msgstr "дополнительный"
+
+msgid "if $PROG doesn't start and exit."
+msgstr "если $PROG не запускается и завершается."
+
+msgid "images"
+msgstr "изображения"
+
+msgid "licence"
+msgstr "лицензия"
+
+msgid "or Press Cancel to reject and confinue."
+msgstr "или нажмите Отмена для отказа и продолжения."
+
+msgid "outputs"
+msgstr "выходы"
+
+msgid "primary"
+msgstr "основной"
+
+msgid "print version and exit."
+msgstr "вывести версию и выйти."
+
+msgid "restore backgrounds at session start."
+msgstr "восстановить обои при запуске сессии."
+
+msgid "secondary"
+msgstr "вторичный"
+
+msgid "show this help and exit."
+msgstr "показать эту справку и выйти."
+
+msgid "try \"man $PROG\" for more information."
+msgstr "попробуйте \"man $PROG\" для получения дополнительной информации."
+
+msgid "will restart when you are ready."
+msgstr "нажмите Сохранить."
