@@ -14,6 +14,7 @@ install:
 	install -m 0755 bin/xwwall $(DESTDIR)$(BINDIR)
 	install -m 0644 man/xwwall.1 $(DESTDIR)$(MANDIR)/man1
 	install -m 0644 data/xwwall.svg $(DESTDIR)$(DATADIR)/icons/hicolor/scalable/apps
+	sgfmt data/xwwall.po -o $(DESTDIR)$(DATADIR)/locale/ru/LS_MESSAGES/xwwall.mo
 
 uninstall:
 	-rm -f $(DESTDIR)$(DATADIR)/applications/xwwall
@@ -21,3 +22,4 @@ uninstall:
 	-rm -f $(DESTDIR)$(MANDIR)/man1/xwwall.1
 	-rm -f $(DESTDIR)$(DATADIR)/icons/hicolor/scalable/apps/xwwall.svg
 	-rm -f $(DESTDIR)$(DATADIR)/applications/xwwall.desktop
+	-rm -f $(DESTDIR)$(DATADIR)/locale/ru/LC_MESSAGES/xwwall.mo
