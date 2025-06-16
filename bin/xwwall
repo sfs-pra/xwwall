@@ -1,11 +1,17 @@
 #!/bin/bash
 
-export V=0.2.4
+export V=0.2.5 #sfs
+# Initialize gettext for internationalization
+export TEXTDOMAIN=xwwall
+#export TEXTDOMAINDIR="${XDG_DATA_HOME:-$HOME/.local/share}/locale"
+. gettext.sh
+gtkdialog=gtkdialog
+
 export GTK3DIALOG
 export MAINGUI
-[[ -z "$GTK3DIALOG" ]] && GTK3DIALOG=gtk3dialog
+[[ -z "$GTK3DIALOG" ]] && GTK3DIALOG=$gtkdialog
 if [[ "$(pwd)" == "$HOME" ]]; then 
-	export BGDIR="${BGDIR:-$HOME/Pictures/wallpapers}"
+	export BGDIR="${BGDIR:-$HOME/.local/share/backgrounds}"
 else
 	export BGDIR="$(pwd)"
 fi
@@ -46,17 +52,17 @@ case "$1" in
 		exit 0
 	;;
 	-*v|-*version)
-	echo -e "\t$PROG $V\n\t\tGPL-2.0+ licence\n"
+	echo -e "\t$PROG $V\n\t\tGPL-2.0+ $(gettext "licence")\n"
 	exit 0
 	;;
 	-*h|-*help)
-	echo -e "\t$PROG -h|--help\n\t\tshow this help and exit.\n"
-	echo -e "\t$PROG -v|--version\n\t\tprint version and exit.\n"
-	echo -e "\t$PROG -d|--delconf\n\t\tdelete \$HOME/.config/$PROG"
-	echo -e "\t\tif $PROG doesn't start and exit.\n"
-	echo -e "\t$PROG --restore\n\t\trestore backgrounds at session start."
-	echo -e "\tAn optional argument \"\$PROFILE\" is supported.\n"
-	echo -e "\ttry \"man $PROG\" for more information."
+	echo -e "\t$PROG -h|--help\n\t\t$(gettext "show this help and exit.")\n"
+	echo -e "\t$PROG -v|--version\n\t\t$(gettext "print version and exit.")\n"
+	echo -e "\t$PROG -d|--delconf\n\t\t$(gettext "delete") \$HOME/.config/$PROG"
+	echo -e "\t\t$(gettext "if $PROG doesn't start and exit.")\n"
+	echo -e "\t$PROG --restore\n\t\t$(gettext "restore backgrounds at session start.")"
+	echo -e "\t$(gettext 'An optional argument "$PROFILE" is supported.')\n"
+	echo -e "\t$(gettext 'try "man $PROG" for more information.')"
 	exit 0
 	;;
 esac
@@ -156,7 +162,7 @@ echo 'window#splash {
 	background: '#${COLOR}';
 }
 ' > "$TEMP/win.css"
-
+#'
 # get the primary output
 [[ -z "$TWIDTH" ]] && TWIDTH=9
 case $TWIDTH in
@@ -172,14 +178,14 @@ if [[ "$WAYLAND" == 'yes' ]]; then
 	do
 		# $i is sourced
 		. "$i"
-		[[ "$POS" == '0' ]] && echo "$OUTPUT = primary" && cp $i $TEMP/ww0
-		[[ "$POS" == "$X" ]] && echo "$OUTPUT = secondary" && cp $i $TEMP/ww1
-		[[ $POS -gt $X ]] && echo "$OUTPUT = extra" && cp $i $TEMP/ww2$e && e=$((e+1))
+		[[ "$POS" == '0' ]] && echo "$OUTPUT = $(gettext 'primary')" && cp $i $TEMP/ww0
+		[[ "$POS" == "$X" ]] && echo "$OUTPUT = $(gettext 'secondary')" && cp $i $TEMP/ww1
+		[[ $POS -gt $X ]] && echo "$OUTPUT = $(gettext 'extra')" && cp $i $TEMP/ww2$e && e=$((e+1))
 	done
 	rm $TEMP/Wmonitor* # finished with these
 	read -r NUM < "$TEMP/number"
 	export NUM
-	echo $NUM outputs
+	echo $NUM $(gettext "outputs")
 	. $TEMP/ww0
 	export Wdth=$((X / TWIDTH))
 	export MWdth=$((X / 2))
@@ -190,14 +196,14 @@ else
 	do
 		# $f is sourced
 		. "$f"
-		[[ "$POS" == '0' ]] && echo "$OUTPUT = primary" && cp $f $TEMP/xx0
-		[[ "$POS" == "$X" ]] && echo "$OUTPUT = secondary" && cp $f $TEMP/xx1
-		[[ $POS -gt $X ]] && echo "$OUTPUT = extra" && cp $f $TEMP/xx2$e && e=$((e+1))
+		[[ "$POS" == '0' ]] && echo "$OUTPUT = $(gettext 'primary')" && cp $f $TEMP/xx0
+		[[ "$POS" == "$X" ]] && echo "$OUTPUT = $(gettext 'secondary')" && cp $f $TEMP/xx1
+		[[ $POS -gt $X ]] && echo "$OUTPUT = $(gettext 'extra')" && cp $f $TEMP/xx2$e && e=$((e+1))
 	done
 	rm $TEMP/Xmonitor* # finished with these
 	export NUM
 	read -r NUM < "$TEMP/number"
-	echo $NUM outputs
+	echo $NUM $(gettext "outputs")
 	. $TEMP/xx0
 	export Wdth=$((X / TWIDTH))
 	export MWdth=$((X / 2))
@@ -215,9 +221,9 @@ _splash() {
 	case $2 in
 		0)[[ "$SPLASH" == 'false' ]] && return
 		DIS='
-			<button tooltip-text="Do not show again">
+			<button tooltip-text="'$(gettext "Do not show again")'">
 				<input file icon="window-close"></input>
-				<label>Dismiss</label>
+				<label>'$(gettext "Dismiss")'</label>
 				<action>if grep -q "SPLASH" '$CONF'; then sed -i "s/^SPLASH.*$/SPLASH=false/" '$CONF';else echo SPLASH=false >> '$CONF'; fi</action>
 				<action>exit:DISMISS</action>
 			</button>'
@@ -239,7 +245,7 @@ _splash() {
 		[[ "$3" == 'b' ]] && CR="--geometry=+$((X/2-240))+$((Y-300))"
 	fi
 	TIMER='<timer interval="'$IVAL'" visible="false">'$KILL'<action>exit:'$E_VAL'</action></timer>'
-	echo '<window type-hint="6" icon-name="dialog-info" '$POPT' name="splash" width-request="360">
+	echo '<window type-hint="6" icon-name="dialog-info" '$POPT' name="splash" width-request="360" title="'$PROG' ">
 	<vbox name="splash">
 	   <vbox> 
 		<hbox name="splash">
@@ -257,7 +263,7 @@ _splash() {
 		<hbox name="splash">
 			'$DIS'
 			<button>
-			  <label>OK</label>
+			  <label>'$(gettext "OK")'</label>
 			  <input file icon="gtk-ok"></input>
 			  '$ACT'
 			</button>
@@ -280,7 +286,7 @@ _greeting() {
 	  </hbox>
 	  <hbox space-expand="true" space-fill="true">
 	    <text use-markup="true">
-	      <label>"<big><big>Welcome to '$PROG'</big></big>"</label>
+	      <label>"<big><big>'$(gettext "Welcome to")' '$PROG'</big></big>"</label>
 	    </text>
 	  </hbox>
 	</vbox>
@@ -309,10 +315,10 @@ _selections() {
 confirm_gui() {
 	_selections
 	PIX=$(cat $TEMP/ret)
-	export CON='<window icon-name="xwwall" title="Confirm selection">
+	export CON='<window icon-name="xwwall" title="'$(gettext "Confirm selection")'">
 	<vbox>
     <hbox space-expand="true" space-fill="true">
-	    <text><label>Please confirm that the image below is correct.</label></text>
+	    <text><label>'$(gettext "Please confirm that the image below is correct.")'</label></text>
 	  </hbox>
 	  <hbox space-expand="true" space-fill="true">
 		'$PIX'
@@ -326,14 +332,15 @@ confirm_gui() {
 	      <action>rm -f '$TEMP/increment'</action>
           <action>exit:No</action>
 	    </button>
-	    <button tooltip-text="If unsatisfied with your choice try again.">
+	    <button tooltip-text="'$(gettext "If unsatisfied with your choice try again.")'">
 	      <input file icon="refresh"></input>
-	      <label>Refresh</label>
+	      <label>'$(gettext "Refresh")'</label>
           <action>exit:REFRESH</action>
 	    </button>
 	  </hbox>
 	</vbox>
 </window>'
+#'
 	eval "$($GTK3DIALOG -p CON -c --styles=$TEMP/win.css)"
 	case $EXIT in
 		Yes)_build_command; read -r a b c <<<$(ps -ef | grep -m1 'main_gui'); kill -9 $b;;
@@ -378,7 +385,8 @@ button_gui() {
 		shopt -s globstar
 		for WALL in "$BGDIR"/*{,/**}
 		do
-			[[ "$(file --brief --mime-type "$WALL" )" = *image* ]] || continue # test mime
+			#[[ "$(file --brief --mime-type "$WALL" )" = *image* ]] || continue # test mime
+			[[ "$WALL" =~ \.(svg|png|jpg)$ ]] || continue # test mime
 			# we take advantage of bash math here
 			# for a nicish GUI width *must* be consistent
 			i=$((c/4))
@@ -393,10 +401,11 @@ button_gui() {
 		      export TOT=$((c+1))
 		      if [[ $c -ge 300 ]];then
 				  export TOT=300
-				  _splash "Warning: Limit of 300 images" 2 2 &
+				  _splash "$(gettext "Warning: Limit of 300 images")" 2 2 &
 				  break
 			  fi
 		done
+#		echo $buttonsx ;exit
 		shopt -u globstar
 		for j in "${!buttonsx[@]}"
 		do buttons+="		<hbox>
@@ -413,7 +422,8 @@ button_gui() {
 			shopt -s globstar
 			for WALL in "${EXTRA_BGDIRS[n]}"/*{,/**}
 			do
-				[[ "$(file --brief --mime-type "$WALL" )" = *image* ]] || continue # test mime
+				#[[ "$(file --brief --mime-type "$WALL" )" = *image* ]] || continue # test mime
+				[[ "$WALL" =~ \.(svg|png|jpg)$ ]] || continue # test mime
 				# we take advantage of bash math here
 				# for a nicish GUI width *must* be consistent
 				i=$((c/4))
@@ -428,7 +438,7 @@ button_gui() {
 			      export TOT=$((c+1))
 			      if [[ $c -ge 300 ]];then
 					  export TOT=300
-					  _splash "Warning: Limit of 300 images" 2 2 &
+					  _splash "$(gettext "Warning: Limit of 300 images")" 2 2 &
 					  break
 				  fi
 			done
@@ -462,17 +472,17 @@ sub_gui() {
 	fi
 	if [[ $NUM -eq 1 ]]; then
 		DO_ACTION='<action signal="button-press-event">_build_command &</action>'
-		ETT='Pressing image will confirm,'
+		ETT=$(gettext "Pressing image will confirm,")
 		XTRACTION='<action signal="button-release-event">echo '$PROG' - sleeping > '$TEMP/wake'</action>
 	      <action signal="button-release-event">exit:Yes</action>'
 	else
 		DO_ACTION='<action signal="button-press-event">if [[ '$INC' -ge '$NUM' ]]; then confirm_gui;fi &</action>'
 		ETT='Pressing image will save, you can confirm later,'
 	fi
-	MTEXT='Choose the Mode.'
+	MTEXT=$(gettext 'Choose the Mode.')
     if [[ $INC -eq $NUM && "$WAYLAND" != 'yes' ]]; then # only for X11
     COMBO='<hbox space-expand="false" space-fill="false">
-      <entry name="noent" editable="false"><default>Mode:</default><sensitive>false</sensitive></entry>
+      <entry name="noent" editable="false"><default>'$(gettext "Mode:")'</default><sensitive>false</sensitive></entry>
       <hseparator space-expand="true" space-fill="true" name="sep"></hseparator>
       <comboboxtext space-expand="true" space-fill="true">
         <variable>MODE</variable>
@@ -485,26 +495,26 @@ sub_gui() {
     </hbox>'
     elif [[ "$WAYLAND" == 'yes' ]]; then  
     COMBO='<hbox space-expand="false" space-fill="false">
-      <entry name="noent" editable="false"><default>Mode:</default><sensitive>false</sensitive></entry>
+      <entry name="noent" editable="false"><default>'$(gettext "Mode:")'</default><sensitive>false</sensitive></entry>
       <hseparator space-expand="true" space-fill="true" name="sep"></hseparator>
       <comboboxtext space-expand="true" space-fill="true">
         <variable>MODE</variable>
-        <item>stretch</item>
-        <item>fill</item>
-        <item>fit</item>
-        <item>center</item>
-        <item>tile</item>
+        <item>'$(gettext stretch)'</item>
+        <item>'$(gettext fill)'</item>
+        <item>'$(gettext fit)'</item>
+        <item>'$(gettext center)'</item>
+        <item>'$(gettext tile)'</item>
       </comboboxtext>
     </hbox>'
     fi
-	export SUBGUI='<window icon-name="xwwall" title="Selection">
+	export SUBGUI='<window icon-name="xwwall" title="'$(gettext "Selection")'">
 	<vbox>
     <hbox space-expand="true" space-fill="true">
-	  <text><label>'$MTEXT' Press the image to set.</label></text>
+	  <text><label>'$MTEXT' '$(gettext "Press the image to set.")'</label></text>
 	</hbox>
     '$COMBO'
 	<hbox space-expand="false" space-fill="false">
-      <entry name="noent" editable="false"><default>Output: '$INC'</default><sensitive>false</sensitive></entry>
+      <entry name="noent" editable="false"><default>'$(gettext "Output:")' '$INC'</default><sensitive>false</sensitive></entry>
       <hseparator space-expand="true" space-fill="true" name="sep"></hseparator>
       <entry name="ent" editable="false" width-chars="12">
         <variable>OUT</variable>
@@ -512,7 +522,7 @@ sub_gui() {
       </entry>
     </hbox>
 	  <hbox space-expand="true" space-fill="true">
-		<button name="cbg" tooltip-text="'"${1##*/}"$'\n'''$ETT' or Press No to reject and confinue.">
+		<button name="cbg" tooltip-text="'"${1##*/}"$'\n'''$ETT' '$(gettext "or Press Cancel to reject and confinue.")'">
 		  <variable>CBG</variable>
 	      <input file>'$1'</input>
 	  	  <width>320</width>
@@ -527,7 +537,17 @@ sub_gui() {
 		</button>
 	  </hbox>
 	  <hbox>
-	    <button no>
+	    <button ok>
+		  <action signal="button-press-event">echo -n '$((INC+1))' > $TEMP/increment</action>
+		  <action signal="button-press-event">echo '$1' >> '$TEMP'/selected</action>
+		  '$ACTION'
+		  <action>sed -i -e "s% .$%%g" '$TEMP/$SS'</action>
+	      <action signal="button-press-event">echo '$PROG' > '$TEMP/wake'</action>
+		  '$DO_ACTION'
+		  '$XTRACTION'
+	      <action signal="button-release-event">exit:SUB</action>
+	    </button>
+	    <button cancel>
 	      <action signal="button-press-event">echo '$PROG' > '$TEMP/wake'</action>
 	      <action signal="button-release-event">exit:NO</action>
 	    </button>
@@ -545,12 +565,12 @@ sub_gui() {
 main_gui() {
 	echo ''$PROG' - sleeping' > "$TEMP/wake"
 	[[ -z "$SWIDTH" ]] && SWIDTH=0
-	[[ -r "$TEMP/main_gui.xml" ]] && _splash "Please wait ..." 6 2 &
+	[[ -r "$TEMP/main_gui.xml" ]] && _splash "$(gettext "Please wait ...")" 6 2 &
 	BUTTONS=$(cat $TEMP/buttons)
-	export MAINGUI='<window icon-name="xwwall" file-monitor="true" auto-refresh="true" title="'$PROG' - Background Choice">
+	export MAINGUI='<window icon-name="xwwall" file-monitor="true" auto-refresh="true" title="'$PROG' - '$(gettext "Background Choice")'">
   <vbox>
     <hbox space-expand="true" space-fill="true">
-      <text use-markup="true" tooltip-text="'$TOT' images"><label>"<b>Select an image for your wallpaper by pressing the image.</b>"</label></text>
+      <text use-markup="true" tooltip-text="'$TOT' '$(gettext "images")'"><label>"<b>'$(gettext "Select an image for your wallpaper by pressing the image.")'</b>"</label></text>
     </hbox>
     <hseparator space-expand="true" space-fill="true"></hseparator>
     <hbox>
@@ -560,20 +580,19 @@ main_gui() {
     </hbox>
     <hbox space-expand="true" space-fill="true">
     <hbox space-expand="false" space-fill="false">
-      <button tooltip-text="Preferences">
-        <label>Preferences</label>
+      <button tooltip-text="'$(gettext "Preferences")'">
+        <label>'$(gettext "Preferences")'</label>
         <width>16</width>
         <input file icon="preferences-desktop-wallpaper"></input>
         <action>exit:PREFS</action>
       </button>
     </hbox>
 	<hseparator space-expand="true" space-fill="true" name="sep"></hseparator>
-      <text label="Confirmation is required when finished."></text>
+      <text label="'$(gettext "Confirmation is required when finished.")'"></text>
     <hseparator space-expand="true" space-fill="true" name="sep"></hseparator>
     <hbox space-expand="false" space-fill="false">
-      <button>
-        <label>Cancel</label>
-        <input file icon="gtk-cancel"></input>
+      <button cancel>
+        <label>'$(gettext "Cancel")'</label>
         <action>kill '$PID'</action>
         <action>exit:abort</action>
       </button>
@@ -602,25 +621,25 @@ _pref() {
     <hbox space-expand="true" space-fill="true">
       <hbox space-expand="true" space-fill="true">
         <checkbox>
-          <label>enable extra directories.</label>
+          <label>'$(gettext "enable extra directories.")'</label>
           <variable>CXTRA</variable>
           <default>'$XTRAS'</default>
         </checkbox>
       </hbox>
     </hbox>'
 	fi
-	export EXTRA_DIRS='<window icon-name="gtk-preferences" title="Extra Directories" width-request="400">
+	export EXTRA_DIRS='<window icon-name="gtk-preferences" title="'$(gettext "Extra Directories")'" width-request="400">
 	  <vbox>
 	    <hbox space-expand="true" space-fill="true">
-          <text use-markup="true"><label>"<b>Select extra directories.</b>"</label></text>
+          <text use-markup="true"><label>"<b>'$(gettext "Select extra directories.")'</b>"</label></text>
         </hbox>
         <hseparator space-expand="true" space-fill="true"></hseparator>
         <hbox space-expand="true" space-fill="true">
-          <text><label>"Press Save and '$PROG' will restart when you are ready."</label></text>
+          <text><label>"'$(gettext "Press Save and")' '$PROG' '$(gettext "will restart when you are ready.")'"</label></text>
         </hbox>
         <hseparator name="ent" space-expand="true" space-fill="true"></hseparator>
         <hbox space-expand="true" space-fill="true">
-          <text><label>"Choose the directory to search wallpapers."</label></text>
+          <text><label>"'$(gettext "Choose the directory to search wallpapers.")'"</label></text>
         </hbox>
         <hbox space-expand="true" space-fill="true">
           <hbox space-expand="true" space-fill="true">
@@ -630,7 +649,7 @@ _pref() {
           </hbox>
           <hbox space-expand="false" space-fill="false">
           <button>
-            <input file icon="directory-open"></input>
+            <input file icon="gtk-directory"></input>
             <variable>FILE_BROWSE_DIRECTORY0</variable>
             <action function="fileselect">BACKGROUNDS0</action>
           </button>
@@ -645,7 +664,7 @@ _pref() {
           </hbox>
           <hbox space-expand="false" space-fill="false">
           <button>
-            <input file icon="directory-open"></input>
+            <input file icon="gtk-directory"></input>
             <variable>FILE_BROWSE_DIRECTORY1</variable>
             <action function="fileselect">BACKGROUNDS1</action>
           </button>
@@ -659,8 +678,10 @@ _pref() {
           </entry>
           </hbox>
           <hbox space-expand="false" space-fill="false">
+
+
           <button>
-            <input file icon="directory-open"></input>
+            <input file icon="gtk-directory"></input>
             <variable>FILE_BROWSE_DIRECTORY2</variable>
             <action function="fileselect">BACKGROUNDS2</action>
           </button>
@@ -671,34 +692,34 @@ _pref() {
 	</window>
 	'
 	
-	[[ "$SPLASH" == 'false' ]] && CDEF=false || CDEF=true
-	[[ -n "$COLOR" ]] && DEFCOL=#${COLOR} ||  DEFCOL=#666666
-	[[ -n "$SWIDTH" ]] && SW=$SWIDTH || SW=0
-	[[ -n "$TWIDTH" ]] && TW=$TWIDTH || TW=9
-	if [[ $NUM -gt 1 ]]; then
-		SPLASHPREF='    <hseparator space-expand="true" space-fill="true"></hseparator>
+[[ "$SPLASH" == 'false' ]] && CDEF=false || CDEF=true
+[[ -n "$COLOR" ]] && DEFCOL=#${COLOR} ||  DEFCOL=#666666
+[[ -n "$SWIDTH" ]] && SW=$SWIDTH || SW=0
+[[ -n "$TWIDTH" ]] && TW=$TWIDTH || TW=9
+if [[ $NUM -gt 1 ]]; then
+    SPLASHPREF='    <hseparator space-expand="true" space-fill="true"></hseparator>
     <hbox space-expand="true" space-fill="true">
       <hbox space-expand="true" space-fill="true">
         <checkbox>
-          <label>enable initial splash screen.</label>
+          <label>'$(gettext "enable initial splash screen")'</label>
           <variable>SPL</variable>
           <default>'$CDEF'</default>
         </checkbox>
       </hbox>
     </hbox>'
-	fi
-	export PGUI='<window icon-name="gtk-preferences" title="Preferences" width-request="400">
+fi
+export PGUI='<window icon-name="gtk-preferences" title="'$(gettext "Preferences")'" width-request="400">
   <vbox>
     <hbox space-expand="true" space-fill="true">
-      <text use-markup="true"><label>"<b>Select your preferences.</b>"</label></text>
+      <text use-markup="true"><label>"<b>'$(gettext "Select your preferences.")'</b>"</label></text>
     </hbox>
     <hseparator space-expand="true" space-fill="true"></hseparator>
     <hbox space-expand="true" space-fill="true">
-      <text><label>"Press Save and '$PROG' will restart when you are ready."</label></text>
+      <text><label>"'$(gettext "Press Save and")' '$PROG' '$(gettext "will restart when you are ready.")'"</label></text>
     </hbox>
     <hseparator name="ent" space-expand="true" space-fill="true"></hseparator>
     <hbox space-expand="true" space-fill="true">
-      <text><label>"Choose the directory to search wallpapers."</label></text>
+      <text><label>'$(gettext "Choose the directory to search wallpapers.")'</label></text>
     </hbox>
     <hbox space-expand="true" space-fill="true">
       <hbox space-expand="true" space-fill="true">
@@ -709,33 +730,20 @@ _pref() {
       </hbox>
       <hbox space-expand="false" space-fill="false">
       <button>
-        <input file icon="directory-open"></input>
+        <input file icon="gtk-directory"></input>
         <variable>FILE_BROWSE_DIRECTORY</variable>
         <action function="fileselect">BACKGROUNDS</action>
       </button>
       </hbox>
     </hbox>
     <hseparator space-expand="true" space-fill="true"></hseparator>
-    <hbox space-expand="true" space-fill="true">
-      <hbox space-expand="true" space-fill="true">
-        <text label="Optionally choose extra directories"></text>
-      </hbox>
-      <hseparator space-expand="true" space-fill="true" name="sep"></hseparator>
-      <hbox space-expand="true" space-fill="true">
-        <button>
-          <label>Ok</label>
-          <input file icon="gtk-ok"></input>
-          <action function="launch">EXTRA_DIRS</action>
-        </button>
-      </hbox>
-    </hbox>
 '$DXTRA'
 '$SPLASHPREF'
     <hseparator space-expand="true" space-fill="true"></hseparator>
     <hbox space-expand="true" space-fill="true">
       <hbox space-expand="true" space-fill="true">
         <hbox space-expand="false" space-fill="false">
-        <text label="GUI width adjustment" tooltip-text="Adjust the width of the interface to suit. The thumbnail setting below may also need adjustment."></text>
+        <text label="'$(gettext "GUI width adjustment")'" tooltip-text="'$(gettext "Adjust the width of the interface to suit. The thumbnail setting below may also need adjustment")'."></text>
         </hbox>
         <hseparator space-expand="true" space-fill="true" name="sep"></hseparator>
         <hbox space-expand="false" space-fill="false">
@@ -750,7 +758,7 @@ _pref() {
     <hbox space-expand="true" space-fill="true">
       <hbox space-expand="true" space-fill="true">
         <hbox space-expand="false" space-fill="false">
-        <text label="Thumbnail adjustment" tooltip-text="Adjust the width of thumbnail images. May need to adjust above setting to suit. Larger number is smaller width."></text>
+        <text label="'$(gettext "Thumbnail adjustment")'" tooltip-text="'$(gettext "Adjust the width of thumbnail images. May need to adjust above setting to suit. Larger number is smaller width")'."></text>
         </hbox>
         <hseparator space-expand="true" space-fill="true" name="sep"></hseparator>
         <hbox space-expand="false" space-fill="false">
@@ -765,7 +773,7 @@ _pref() {
     <hbox space-expand="true" space-fill="true">
       <hbox space-expand="true" space-fill="true">
       <entry editable="false">
-        <default>Choose a background color</default>
+        <default>'$(gettext "Choose a background color")'</default>
       </entry>
       </hbox>
       <hbox space-expand="false" space-fill="false">
@@ -777,94 +785,92 @@ _pref() {
     </hbox>
     <hseparator space-expand="true" space-fill="true"></hseparator>
     <hbox space-expand="false" space-fill="false">
-      <button>
-        <label>Cancel</label>
-        <input file icon="gtk-cancel"></input>
+      <button cancel>
+        <action>exit:SAVE</action>
         <action>kill '$PID'</action>
-        <action>exit:abort</action>
       </button>
       <button>
-        <label>Save</label>
+        <label>'$(gettext "Save")'</label>
         <input file icon="gtk-save"></input>
         <action>exit:SAVE</action>
       </button>
     </hbox>
   </vbox>
 </window>'
-	eval "$($GTK3DIALOG -p PGUI -c --styles=$TEMP/win.css)"
-	if [[ -d "$BACKGROUNDS" ]]; then
-		sed -i "s%^BGDIR.*$%BGDIR=\"$BACKGROUNDS\"%" "$CONF"
-		rm -f "$TEMP/buttons"
-		rm -f "$TEMP/main_gui.xml"
-	fi
-	if ! [[ -z "$BACKGROUNDS0" && -z "$BACKGROUNDS1" && -z "$BACKGROUNDS2" ]]; then # do nothing if all vars are empty
-		if [[ -d "$BACKGROUNDS0" || -d "$BACKGROUNDS1" || -d "$BACKGROUNDS2" ]]; then
-			if grep -q 'EXTRA_BGDIRS' "$CONF"; then
-				sed -i '/EXTRA_BGDIRS/d' "$CONF"
-			fi
-			printf "%s" "EXTRA_BGDIRS=( " >>  "$CONF"
-			[[ -n "$BACKGROUNDS0" ]] && printf "%s" "\"$BACKGROUNDS0\" " >>  "$CONF"
-			[[ -n "$BACKGROUNDS1" ]] && printf "%s" "\"$BACKGROUNDS1\" " >>  "$CONF"
-			[[ -n "$BACKGROUNDS2" ]] && printf "%s" "\"$BACKGROUNDS2\" " >>  "$CONF"
-			printf "%s\n" ")" >>  "$CONF"
-			rm -f "$TEMP/buttons"
-			rm -f "$TEMP/main_gui.xml"
-			# since user just set these, enable them
-			echo "XTRAS=true" >> "$CONF"
-		fi
-	fi
-	if grep -q 'SPLASH' "$CONF"; then
-		sed -i "s/^SPLASH.*$/SPLASH=$SPL/" "$CONF"
-	else
-		echo "SPLASH=$SPL" >> "$CONF"
-	fi
-	if grep -q 'XTRAS' "$CONF"; then
-		[[ -n  "$CXTRA" ]] && \
-		sed -i "s/^XTRAS.*$/XTRAS=$CXTRA/" "$CONF"
-	else
-		[[ -n  "$CXTRA" ]] && \
-		echo "XTRAS=$CXTRA" >> "$CONF"
-	fi
-	if grep -q 'SWIDTH' "$CONF"; then
-		sed -i "s/^SWIDTH.*$/SWIDTH=$SW0/" "$CONF"
-	else
-		echo "SWIDTH=$SW0" >> "$CONF"
-	fi
-	echo $BACKGROUNDS0 $BACKGROUNDS1 $BACKGROUNDS2
-	if grep -q 'TWIDTH' "$CONF"; then
-		sed -i "s/^TWIDTH.*$/TWIDTH=$TW0/" "$CONF"
-	else
-		echo "TWIDTH=$TW0" >> "$CONF"
-	fi
-	if grep -q 'COLOR' "$CONF"; then
-		sed -i "s/^COLOR.*$/COLOR=${CLB0:1:6}/" "$CONF"
-	else
-		echo "COLOR=${CLB0:1:6}" >> "$CONF"
-	fi
-	if [[ "$EXIT" == 'SAVE' ]]; then
-		exec $0
-	fi
+eval "$($GTK3DIALOG -p PGUI -c --styles=$TEMP/win.css)"
+if [[ -d "$BACKGROUNDS" ]]; then
+    sed -i "s%^BGDIR.*$%BGDIR=\"$BACKGROUNDS\"%" "$CONF"
+    rm -f "$TEMP/buttons"
+    rm -f "$TEMP/main_gui.xml"
+fi
+if ! [[ -z "$BACKGROUNDS0" && -z "$BACKGROUNDS1" && -z "$BACKGROUNDS2" ]]; then # do nothing if all vars are empty
+    if [[ -d "$BACKGROUNDS0" || -d "$BACKGROUNDS1" || -d "$BACKGROUNDS2" ]]; then
+        if grep -q 'EXTRA_BGDIRS' "$CONF"; then
+            sed -i '/EXTRA_BGDIRS/d' "$CONF"
+        fi
+        printf "%s" "EXTRA_BGDIRS=( " >>  "$CONF"
+        [[ -n "$BACKGROUNDS0" ]] && printf "%s" "\"$BACKGROUNDS0\" " >>  "$CONF"
+        [[ -n "$BACKGROUNDS1" ]] && printf "%s" "\"$BACKGROUNDS1\" " >>  "$CONF"
+        [[ -n "$BACKGROUNDS2" ]] && printf "%s" "\"$BACKGROUNDS2\" " >>  "$CONF"
+        printf "%s\n" ")" >>  "$CONF"
+        rm -f "$TEMP/buttons"
+        rm -f "$TEMP/main_gui.xml"
+        # since user just set these, enable them
+        echo "XTRAS=true" >> "$CONF"
+    fi
+fi
+if grep -q 'SPLASH' "$CONF"; then
+    sed -i "s/^SPLASH.*$/SPLASH=$SPL/" "$CONF"
+else
+    echo "SPLASH=$SPL" >> "$CONF"
+fi
+if grep -q 'XTRAS' "$CONF"; then
+    [[ -n  "$CXTRA" ]] && \
+    sed -i "s/^XTRAS.*$/XTRAS=$CXTRA/" "$CONF"
+else
+    [[ -n  "$CXTRA" ]] && \
+    echo "XTRAS=$CXTRA" >> "$CONF"
+fi
+if grep -q 'SWIDTH' "$CONF"; then
+    sed -i "s/^SWIDTH.*$/SWIDTH=$SW0/" "$CONF"
+else
+    echo "SWIDTH=$SW0" >> "$CONF"
+fi
+echo $BACKGROUNDS0 $BACKGROUNDS1 $BACKGROUNDS2
+if grep -q 'TWIDTH' "$CONF"; then
+    sed -i "s/^TWIDTH.*$/TWIDTH=$TW0/" "$CONF"
+else
+    echo "TWIDTH=$TW0" >> "$CONF"
+fi
+if grep -q 'COLOR' "$CONF"; then
+    sed -i "s/^COLOR.*$/COLOR=${CLB0:1:6}/" "$CONF"
+else
+    echo "COLOR=${CLB0:1:6}" >> "$CONF"
+fi
+if [[ "$EXIT" == 'SAVE' ]]; then
+    exec $0
+fi
 }; export -f _pref
 
 
 _build_command() {
-	if [[ "$WAYLAND" == 'yes' ]]; then
-		echo 'killall swaybg >/dev/null 2>&1' > $TEMP/cmd
-		echo 'swaybg \' >> $TEMP/cmd
-		cat $TEMP/Wset >> $TEMP/cmd
-		echo '>/dev/null 2>&1 &' >> $TEMP/cmd
-		# run it
-		. "$TEMP/cmd"
-		cat $TEMP/cmd > "$CONFDIR/cmd" # you can put this in your startup file
-	else
-		# this builds ~/.fehbg with the command below.
-		echo 'killall feh >/dev/null 2>&1' > $TEMP/cmd
-		echo 'feh \' >> $TEMP/cmd
-		cat $TEMP/Xwset >> $TEMP/cmd
-		echo '>/dev/null 2>&1 &' >> $TEMP/cmd
-		# run it
-		. "$TEMP/cmd"
-	fi
+    if [[ "$WAYLAND" == 'yes' ]]; then
+        echo 'killall swaybg >/dev/null 2>&1' > $TEMP/cmd
+        echo 'swaybg \' >> $TEMP/cmd
+        cat $TEMP/Wset >> $TEMP/cmd
+        echo '>/dev/null 2>&1 &' >> $TEMP/cmd
+        # run it
+        . "$TEMP/cmd"
+        cat $TEMP/cmd > "$CONFDIR/cmd" # you can put this in your startup file
+    else
+        # this builds ~/.fehbg with the command below.
+        echo 'killall feh >/dev/null 2>&1' > $TEMP/cmd
+        echo 'feh \' >> $TEMP/cmd
+        cat $TEMP/Xwset >> $TEMP/cmd
+        echo '>/dev/null 2>&1 &' >> $TEMP/cmd
+        # run it
+        . "$TEMP/cmd"
+    fi
 }; export -f _build_command
 
 _dependencies() {     # adapted from bl-includes
@@ -877,15 +883,14 @@ _dependencies() {     # adapted from bl-includes
     done
 
     if [[ ${missing_commands[0]} ]];then
-        ERR_MSG="This script requires the following commands: \"${missing_commands[*]}\" .\
-Please install the packages containing the missing commands and re-run the script."
+        ERR_MSG="$(gettext "This script requires the following commands: \"${missing_commands[*]}\" . Please install the packages containing the missing commands and re-run the script.")"
         _splash "${ERR_MSG}" 3
         exit
     fi
 }
 
 trap_exit() {
-	trap "rm -rf $TEMP" EXIT
+    trap "rm -rf $TEMP" EXIT
 }; export -f trap_exit
 
 
@@ -894,9 +899,9 @@ trap_exit() {
 # required programs
 declare -a APPS
 if [[ "$WAYLAND" == 'yes' ]]; then
-	APPS=( "gtk3dialog" "wlr-randr" "swaybg" )
+    APPS=( "$gtkdialog" "wlr-randr" "swaybg" )
 else
-	APPS=( "gtk3dialog" "xrandr" "feh" )
+    APPS=( "$gtkdialog" "xrandr" "feh" )
 fi
 _dependencies  "${APPS[@]}" 
 
@@ -909,30 +914,31 @@ KWNINW=$(pidof kwin_wayland)
 GNOME=$(pidof gnome-session) # covers X11 and wayland
 XFCE4=$(pidof xfce4-session) # covers X11 and wayland
 if [[ -n "$KWNINX" || "$KWNINW" || "$GNOME" || "$XFCE4" ]]; then # more to add
-	_splash "WARNING: Your desktop may be unsupported" 7
+    _splash "$(gettext "WARNING: Your desktop may be unsupported")" 7
 fi
 
 if [[ ! -d "$BGDIR" ]]; then
-	_splash "Please set a background directory" 3
-	_pref
+    _splash "$(gettext "Please set a background directory")" 3
+    _pref
 else
-	if  [[ -w "$(pwd)" ]]; then
-		[[ -r "$BGDIR/Solid_Color.svg" ]] || cat > "$BGDIR/Solid_Color.svg" <<EOS
+    if  [[ -w "$(pwd)" ]]; then
+        [[ -r "$BGDIR/Solid_Color.svg" ]] || cat > "$BGDIR/Solid_Color.svg" <<EOS
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1366 768">
  <path style="fill:rgba(0,0,0,0.0);" d="m 0,0 1366,0 0,768 -1366,0 z"/>
 </svg>	
 EOS
-	fi
+    fi
 fi
 
 touch "$TEMP/greeting"
 _greeting &
 
 if [[ "$NUM" != '1' ]]; then
-	# this nag can be disabled in prefs
-	_splash "You have $NUM monitors connected. Carefully choose an image for each of them." 0 b &
+    # this nag can be disabled in prefs
+    _splash "$(gettext "You have $NUM monitors connected. Carefully choose an image for each of them.")" 0 b &
 fi
 
 echo ================
 button_gui
 main_gui
+[ "$EXIT" = abort ] || $0 &
